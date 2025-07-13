@@ -1,6 +1,7 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { ChatConfig, VoiceOption, ExampleConfig } from '../types';
 import { VOICE_OPTIONS, DEFAULT_EXAMPLES } from '../constants';
+import apiConfig from '../config.js';
 
 interface SetupScreenProps {
   onStartChat: (config: ChatConfig) => void;
@@ -33,7 +34,7 @@ const SetupScreen: React.FC<SetupScreenProps> = ({ onStartChat }) => {
 
   // Cargar tipos de archivo soportados
   useEffect(() => {
-    fetch('http://localhost:3001/supported-file-types')
+    fetch(`${apiConfig.API_BASE_URL}${apiConfig.endpoints.supportedFileTypes}`)
       .then(res => res.json())
       .then(types => setSupportedTypes(types))
       .catch(err => console.error('Error cargando tipos de archivo:', err));
@@ -80,7 +81,7 @@ const SetupScreen: React.FC<SetupScreenProps> = ({ onStartChat }) => {
       const formData = new FormData();
       formData.append('document', file);
 
-      const response = await fetch('http://localhost:3001/process-document', {
+      const response = await fetch(`${apiConfig.API_BASE_URL}${apiConfig.endpoints.processDocument}`, {
         method: 'POST',
         body: formData,
       });

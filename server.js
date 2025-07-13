@@ -52,9 +52,11 @@ const upload = multer({
 // Usar una configuración de CORS más abierta para producción
 app.use(cors({
   origin: process.env.NODE_ENV === 'production' 
-    ? ['https://prueba-ia-voces.onrender.com', 'https://your-domain.com'] 
-    : ['http://localhost:5173', 'http://localhost:3000'],
-  credentials: true
+    ? ['https://prueba-ia-voces.onrender.com'] 
+    : ['http://localhost:5173', 'http://localhost:3000', 'http://localhost:3001'],
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
 }));
 app.use(bodyParser.json({ limit: '10mb' }));
 

@@ -1,4 +1,5 @@
 import { ChatConfig } from '../types';
+import apiConfig from '../config.js';
 
 let pc: RTCPeerConnection | null = null;
 let dc: RTCDataChannel | null = null;
@@ -54,7 +55,7 @@ export const connect = (
       }, 60000); // 60 segundos de timeout para permitir documentos grandes
 
       // Obtener token de sesión
-      const tokenResponse = await fetch('http://localhost:3001/session', { method: 'POST' });
+      const tokenResponse = await fetch(`${apiConfig.API_BASE_URL}${apiConfig.endpoints.session}`, { method: 'POST' });
       if (!tokenResponse.ok) {
           throw new Error(`Failed to fetch session token: ${tokenResponse.statusText}`);
       }
