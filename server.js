@@ -76,7 +76,9 @@ app.get("/health", (req, res) => {
         status: "OK",
         timestamp: new Date().toISOString(),
         uptime: process.uptime(),
-        environment: process.env.NODE_ENV || 'development'
+        environment: process.env.NODE_ENV || 'development',
+        apiKeyConfigured: !!process.env.OPENAI_API_KEY,
+        apiKeyLength: process.env.OPENAI_API_KEY ? process.env.OPENAI_API_KEY.length : 0
     });
 });
 
@@ -84,6 +86,8 @@ app.get("/health", (req, res) => {
 app.post("/session", async (req, res) => {
     try {
         const apiKey = process.env.OPENAI_API_KEY;
+        console.log('🔑 API Key check:', apiKey ? `Configurada (${apiKey.length} chars)` : 'NO ENCONTRADA');
+        
         if (!apiKey) {
           throw new Error("OpenAI API key is not configured on the server.");
         }
@@ -104,8 +108,13 @@ app.post("/session", async (req, res) => {
 
         if (!response.ok) {
             const errorText = await response.text();
-            console.error("❌ OpenAI session creation failed:", errorText);
-            throw new Error(`Failed to create session: ${response.statusText}`);
+            console.error("❌ OpenAI session creation failed:", {
+                status: response.status,
+                statusText: response.statusText,
+                error: errorText,
+                apiKeyLength: apiKey ? apiKey.length : 0
+            });
+            throw new Error(`Failed to create session: ${response.status} ${response.statusText}`);
         }
 
         const data = await response.json();
