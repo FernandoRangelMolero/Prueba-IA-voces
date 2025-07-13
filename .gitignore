@@ -1,3 +1,8 @@
+# Archivos de entorno (contienen claves secretas)
+.env
+.env.local
+.env.production
+
 # Logs
 logs
 *.log

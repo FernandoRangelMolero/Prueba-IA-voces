@@ -1,0 +1,16 @@
+# Configuración para Render.com
+
+# Build Command
+npm run render-build
+
+# Start Command  
+npm start
+
+# Environment
+NODE_ENV=production
+
+# Variables de entorno requeridas:
+# OPENAI_API_KEY=tu_api_key_aqui
+
+# Auto-deploy
+# Conectar a GitHub repo: https://github.com/FernandoRangelMolero/Prueba-IA-voces.git
