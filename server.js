@@ -121,8 +121,16 @@ app.post("/session", async (req, res) => {
         console.log('✅ Sesión OpenAI creada exitosamente');
         res.send(data);
       } catch (error) {
-        console.error("❌ Error in /session endpoint:", error.message);
-        res.status(500).send({ error: "Failed to create session" });
+        console.error("❌ Error in /session endpoint:", {
+          message: error.message,
+          stack: error.stack,
+          apiKeyPresent: !!process.env.OPENAI_API_KEY,
+          environment: process.env.NODE_ENV
+        });
+        res.status(500).send({ 
+          error: "Failed to create session",
+          details: process.env.NODE_ENV === 'development' ? error.message : 'Internal server error'
+        });
       }
 });
 
