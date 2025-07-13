@@ -1,0 +1,5 @@
+{
+  "name": "AI Voice Trainer",
+  "description": "An application to configure and interact with an AI voice assistant in real-time. Upload documents, provide instructions, and select a voice personality to start a dynamic chat session.",
+  "requestFramePermissions": []
+}

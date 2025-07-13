@@ -1,0 +1,93 @@
+GUÍA DE PRODUCTOS Y SERVICIOS - TECHSOLUTIONS INNOVADORA
+
+=== INFORMACIÓN DE LA EMPRESA ===
+TechSolutions Innovadora es una empresa líder en desarrollo de software y consultoría tecnológica, fundada en 2020. Nos especializamos en soluciones de inteligencia artificial, desarrollo web, y transformación digital para empresas de todos los tamaños.
+
+=== NUESTROS SERVICIOS PRINCIPALES ===
+
+1. DESARROLLO DE SOFTWARE PERSONALIZADO
+   - Aplicaciones web responsivas
+   - Aplicaciones móviles nativas e híbridas
+   - Sistemas de gestión empresarial (ERP/CRM)
+   - APIs y microservicios
+   - Precio: Desde €5,000 hasta €50,000 según complejidad
+
+2. CONSULTORÍA EN INTELIGENCIA ARTIFICIAL
+   - Implementación de chatbots y asistentes virtuales
+   - Análisis predictivo y machine learning
+   - Automatización de procesos con IA
+   - Procesamiento de lenguaje natural
+   - Precio: €3,000 - €25,000 por proyecto
+
+3. TRANSFORMACIÓN DIGITAL
+   - Auditoría tecnológica completa
+   - Migración a la nube (AWS, Azure, Google Cloud)
+   - Optimización de procesos empresariales
+   - Capacitación del personal
+   - Precio: €8,000 - €40,000 según el alcance
+
+4. MANTENIMIENTO Y SOPORTE TÉCNICO
+   - Soporte 24/7 para aplicaciones críticas
+   - Actualizaciones y mejoras continuas
+   - Monitoreo proactivo de sistemas
+   - Precio: €500 - €2,000 mensuales
+
+=== TECNOLOGÍAS QUE MANEJAMOS ===
+- Frontend: React, Vue.js, Angular, TypeScript
+- Backend: Node.js, Python, Java, .NET
+- Bases de datos: PostgreSQL, MongoDB, MySQL
+- Cloud: AWS, Azure, Google Cloud Platform
+- IA/ML: TensorFlow, PyTorch, OpenAI, Anthropic
+- DevOps: Docker, Kubernetes, CI/CD
+
+=== CASOS DE ÉXITO RECIENTES ===
+
+PROYECTO RETAIL PLUS (2024)
+- Cliente: Cadena de retail con 50+ tiendas
+- Solución: Sistema de inventario inteligente con IA
+- Resultado: 30% reducción en pérdidas, 25% mejora en eficiencia
+- Inversión: €35,000
+
+PLATAFORMA EDUCATIVA VIRTUAL (2023)
+- Cliente: Universidad privada
+- Solución: LMS personalizado con videoconferencia integrada
+- Resultado: 500+ estudiantes simultáneos, 99.9% uptime
+- Inversión: €28,000
+
+CHATBOT LEGAL (2024)
+- Cliente: Bufete de abogados
+- Solución: Asistente virtual para consultas iniciales
+- Resultado: 60% reducción en tiempo de respuesta inicial
+- Inversión: €15,000
+
+=== INFORMACIÓN DE CONTACTO ===
+- Teléfono: +34 91 123 4567
+- Email: info@techsolutions-innovadora.com
+- Dirección: Calle de la Tecnología, 123, 28001 Madrid
+- Horario: Lunes a Viernes, 9:00 - 18:00
+- Sitio web: www.techsolutions-innovadora.com
+
+=== PROCESO DE TRABAJO ===
+1. Consulta inicial gratuita (30 minutos)
+2. Análisis de requerimientos detallado
+3. Propuesta técnica y económica
+4. Desarrollo iterativo con entregas semanales
+5. Testing y control de calidad
+6. Despliegue y capacitación
+7. Soporte post-lanzamiento
+
+=== VENTAJAS COMPETITIVAS ===
+- Equipo de 25+ desarrolladores senior
+- Metodologías ágiles (Scrum/Kanban)
+- Garantía de 1 año en todos los desarrollos
+- Tiempo de respuesta promedio: 2 horas
+- Certificaciones: ISO 27001, AWS Partner
+- 95% de clientes satisfechos según encuestas
+
+=== SECTORES DE ESPECIALIZACIÓN ===
+- Fintech y servicios financieros
+- E-commerce y retail
+- Educación y e-learning
+- Salud y telemedicina
+- Logística y supply chain
+- Startups tecnológicas

@@ -1,0 +1,10 @@
+Este es un documento de prueba para verificar que el procesamiento de documentos funciona correctamente.
+
+El documento contiene información importante sobre el proyecto AI Voice Trainer:
+
+1. Es una aplicación de React con TypeScript
+2. Utiliza la API de OpenAI Realtime para conversaciones de voz
+3. Procesa documentos y los incluye en el contexto de la conversación
+4. Soporta formatos: Word (.docx), texto (.txt), RTF (.rtf) y CSV (.csv)
+
+Esta información debería estar disponible para la IA durante la conversación de voz.
