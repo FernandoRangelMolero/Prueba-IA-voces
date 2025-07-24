@@ -7,6 +7,10 @@ import multer from "multer";
 import path from "path";
 import fs from "fs";
 import { fileURLToPath } from 'url';
+import { RtcTokenBuilder, RtcRole } from 'agora-token';
+import { WebSocketServer } from 'ws';
+import { createServer } from 'http';
+import AgoraService from './services/agoraService.js';
 import { extractTextFromDocument, isSupportedFileType, getSupportedFileTypes } from "./services/documentService.js";
 
 // Configurar variables de entorno
@@ -18,14 +22,16 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 // Verificar que las variables de entorno necesarias estén configuradas
-if (!process.env.OPENAI_API_KEY) {
-  console.error('❌ OPENAI_API_KEY no está configurada');
-  process.exit(1);
+const requiredEnvVars = ['GOOGLE_API_KEY', 'AGORA_APP_ID', 'AGORA_APP_CERTIFICATE', 'ASSEMBLYAI_API_KEY', 'ELEVENLABS_API_KEY'];
+for (const envVar of requiredEnvVars) {
+  if (!process.env[envVar]) {
+    console.error(`❌ ${envVar} no está configurada`);
+    process.exit(1);
+  }
 }
 
 console.log('🚀 Iniciando servidor...');
 console.log('📁 Directorio actual:', __dirname);
-console.log('🔑 OpenAI API Key configurada:', process.env.OPENAI_API_KEY ? 'Sí' : 'No');
 
 // Crear directorio de uploads si no existe
 const uploadsDir = path.join(__dirname, 'uploads');
@@ -70,68 +76,38 @@ app.use((req, res, next) => {
 // === TUS ENDPOINTS DE API (SIN CAMBIOS) ========
 // ===============================================
 
-// Health check endpoint para Render
+// Health check endpoint
 app.get("/health", (req, res) => {
     res.status(200).json({
         status: "OK",
         timestamp: new Date().toISOString(),
         uptime: process.uptime(),
         environment: process.env.NODE_ENV || 'development',
-        apiKeyConfigured: !!process.env.OPENAI_API_KEY,
-        apiKeyLength: process.env.OPENAI_API_KEY ? process.env.OPENAI_API_KEY.length : 0
     });
 });
 
-// Endpoint para la sesión WebRTC
-app.post("/session", async (req, res) => {
+// Endpoint to generate Agora token
+app.post('/agora-token', (req, res) => {
+    const { channelName, uid } = req.body;
+
+    if (!channelName || !uid) {
+        return res.status(400).json({ error: 'channelName and uid are required' });
+    }
+
+    const appID = process.env.AGORA_APP_ID;
+    const appCertificate = process.env.AGORA_APP_CERTIFICATE;
+    const role = RtcRole.PUBLISHER;
+    const expirationTimeInSeconds = 3600;
+    const currentTimestamp = Math.floor(Date.now() / 1000);
+    const privilegeExpiredTs = currentTimestamp + expirationTimeInSeconds;
+
     try {
-        const apiKey = process.env.OPENAI_API_KEY;
-        console.log('🔑 API Key check:', apiKey ? `Configurada (${apiKey.length} chars)` : 'NO ENCONTRADA');
-        
-        if (!apiKey) {
-          throw new Error("OpenAI API key is not configured on the server.");
-        }
-
-        console.log('🔐 Creando sesión de OpenAI Realtime...');
-        
-        const response = await fetch("https://api.openai.com/v1/realtime/sessions", {
-          method: "POST",
-          headers: {
-            "Authorization": `Bearer ${apiKey}`,
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            model: "gpt-4o-realtime-preview-2024-10-01",
-            voice: "alloy",
-          }),
-        });
-
-        if (!response.ok) {
-            const errorText = await response.text();
-            console.error("❌ OpenAI session creation failed:", {
-                status: response.status,
-                statusText: response.statusText,
-                error: errorText,
-                apiKeyLength: apiKey ? apiKey.length : 0
-            });
-            throw new Error(`Failed to create session: ${response.status} ${response.statusText}`);
-        }
-
-        const data = await response.json();
-        console.log('✅ Sesión OpenAI creada exitosamente');
-        res.send(data);
-      } catch (error) {
-        console.error("❌ Error in /session endpoint:", {
-          message: error.message,
-          stack: error.stack,
-          apiKeyPresent: !!process.env.OPENAI_API_KEY,
-          environment: process.env.NODE_ENV
-        });
-        res.status(500).send({ 
-          error: "Failed to create session",
-          details: process.env.NODE_ENV === 'development' ? error.message : 'Internal server error'
-        });
-      }
+        const token = RtcTokenBuilder.buildTokenWithUid(appID, appCertificate, channelName, uid, role, privilegeExpiredTs);
+        res.json({ token });
+    } catch (error) {
+        console.error('Error generating Agora token:', error);
+        res.status(500).json({ error: 'Failed to generate Agora token' });
+    }
 });
 
 // Endpoint para procesar documentos
@@ -261,7 +237,16 @@ process.on('unhandledRejection', (reason, promise) => {
   process.exit(1);
 });
 
-app.listen(port, '0.0.0.0', () => {
+const server = createServer(app);
+const wss = new WebSocketServer({ server });
+
+wss.on('connection', (ws) => {
+  console.log('🎙️ Nueva conexión WebSocket establecida');
+  const agoraService = new AgoraService(ws);
+  agoraService.start();
+});
+
+server.listen(port, '0.0.0.0', () => {
   console.log('🚀 Servidor iniciado exitosamente');
   console.log(`📡 Escuchando en puerto: ${port}`);
   console.log(`🌍 Entorno: ${process.env.NODE_ENV || 'development'}`);

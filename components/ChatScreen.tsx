@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { ChatConfig, ChatMessage, MessageSender } from '../types';
-import * as openaiVoiceService from '../services/openaiVoiceService';
+import * as agoraVoiceService from '../services/agoraVoiceService';
 import * as audioOutputService from '../services/audioOutputService';
 import AIIcon from './icons/AIIcon';
 import UserIcon from './icons/UserIcon';
@@ -17,7 +17,7 @@ const ChatScreen: React.FC<ChatScreenProps> = ({ config, onExit }) => {
   const [aiTranscript, setAiTranscript] = useState('');
   const messageEndRef = useRef<HTMLDivElement>(null);
 
-  const handleWebSocketMessage = useCallback((data: any) => {
+  const handleAgoraMessage = useCallback((data: any) => {
     if (data.type === 'audio') {
         setIsAiSpeaking(true);
         audioOutputService.playAudioChunk(data.audio_chunk);
@@ -42,14 +42,14 @@ const ChatScreen: React.FC<ChatScreenProps> = ({ config, onExit }) => {
 
   useEffect(() => {
     setConnectionStatus('connecting');
-    openaiVoiceService.connect(config, handleWebSocketMessage)
+    agoraVoiceService.connect(config, handleAgoraMessage)
         .then(() => setConnectionStatus('connected'))
         .catch(() => setConnectionStatus('error'));
 
     audioOutputService.initializeAudio();
 
     return () => {
-      openaiVoiceService.disconnect();
+      agoraVoiceService.disconnect();
     };
   }, [config]);
 
